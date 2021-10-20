@@ -5,23 +5,33 @@ import logoImg from '../assets/images/logo.svg';
 import googleIconImg from '../assets/images/google-icon.svg';
 import '../style/auth.scss';
 import { Button } from '../components/Button';
-
+import {useAuth} from '../hooks/useAuth';
 
 export function Home(){
 
+const {user, signInWithGoogle } = useAuth();
 const history = useHistory();   
 
-function handleCreateRoom(){
 
- const provider = new firebase.auth.GoogleAuthProvider();
+async function handleCreateRoom(){
+
+  if  (!user){
+
+   await signInWithGoogle() // se usuario não tiver autenticado  será chamado esse meteodo.
+
+  }
+
+ const provider = new firebase.auth.GoogleAuthProvider();  // para habilitar o botão do google.
 
    auth.signInWithPopup(provider).then(result => {
    
        console.log(result);
 
+       history.push('/rooms/new'); // rota que foi puxado no App. - JÁ AUTENTICADO SOMENTE DIRECIONAR
+
    });
     
-   history.push('/rooms/new');
+   
 
 }
 

@@ -1,12 +1,15 @@
-import {Link} from 'react-router-dom'; // link da pagina para ppasar pra outra 
+// TestContext = ele impoem informação como distribui como exemplo login, usuarioa começa com false para depois alterar.
 
+import {Link} from 'react-router-dom'; // link da pagina para ppasar pra outra 
 import illustrationImg from '../assets/images/illustration.svg'
 import logoImg from '../assets/images/logo.svg';
 import '../style/auth.scss';
 import { Button } from '../components/Button';
+//import {user} from '../hooks/useAuth';
 
+export function NewRoom(){ 
 
-export function NewRoom(){
+   // const {user} = useContext(AuthContext);
 
 return (
 
@@ -21,6 +24,7 @@ return (
 </aside>
 
 <main>
+
 
 <div className="main-content"> 
 

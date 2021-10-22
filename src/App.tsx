@@ -1,9 +1,10 @@
-import  {BrowserRouter, Route} from 'react-router-dom';
+import  {BrowserRouter, Route, Switch} from 'react-router-dom';
 import { NewRoom } from "./pages/NewRoom";
 import { Home } from "./pages/Home";
 import { AuthContextProvider } from './contexts/AuthContext';
+import { Rooms } from './pages/Rooms';
 
-
+// Switch ele nunca deixa duas rotas ser chamada mesmo tempo 
 
 
  export function App () {
@@ -15,8 +16,13 @@ import { AuthContextProvider } from './contexts/AuthContext';
 
     <AuthContextProvider>
 
+      <Switch>
+
     <Route path="/" exact component={Home} />
     <Route path="/rooms/new" component={NewRoom} />
+    <Route path="/rooms/:id" component={Rooms} />
+
+     </Switch>
 
     </AuthContextProvider>
 

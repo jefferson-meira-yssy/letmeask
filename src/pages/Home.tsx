@@ -1,19 +1,24 @@
 import { useHistory } from 'react-router-dom';
-import { auth, firebase } from '../services/firebase';
+import {database} from '../services/firebase';
 import illustrationImg from '../assets/images/illustration.svg'
 import logoImg from '../assets/images/logo.svg';
 import googleIconImg from '../assets/images/google-icon.svg';
 import '../style/auth.scss';
 import { Button } from '../components/Button';
 import {useAuth} from '../hooks/useAuth';
+import { FormEvent, useState } from 'react';
+
+
 
 export function Home(){
 
 const {user, signInWithGoogle } = useAuth();
 const history = useHistory();   
+const [roomCode, setRoomCode] = useState('');
 
 
-async function handleCreateRoom(){
+async function handleCreateRoom(){ // para habilitar o botão do google.
+
 
   if  (!user){
 
@@ -21,19 +26,32 @@ async function handleCreateRoom(){
 
   }
 
- const provider = new firebase.auth.GoogleAuthProvider();  // para habilitar o botão do google.
-
-   auth.signInWithPopup(provider).then(result => {
-   
-       console.log(result);
-
-       history.push('/rooms/new'); // rota que foi puxado no App. - JÁ AUTENTICADO SOMENTE DIRECIONAR
-
-   });
-    
-   
+  history.push('/rooms/new'); // rota que foi puxado no App. - JÁ AUTENTICADO SOMENTE DIRECIONAR
 
 }
+async function handleJoinRoom(event: FormEvent){
+
+  event.preventDefault();   
+
+   if (roomCode.trim() === ''){
+
+    return;
+
+   }
+
+   const roomRef = await database.ref(`rooms/${roomCode}`).get(); // codigo da sala    
+
+   if (!roomRef.exists()){
+
+     alert('Room does not exists.');
+     return;
+
+   }
+
+    history.push(`/rooms/${roomCode}`) 
+
+ }
+
 
 return (
 
@@ -61,9 +79,12 @@ return (
 
     <div className="separator"> ou entre em uma sala </div>
 
-    <form>
-        <input type="text" placeholder="Digite o codigo da sala " />
+    <form onSubmit={handleJoinRoom}>
+        <input type="text" placeholder="Digite o codigo da sala " onChange={event => setRoomCode
+        (event.target.value)} value={roomCode}  />
+
         <Button type="submit">Entrar na sala</Button>
+        
     </form>
 
 </div>

@@ -1,15 +1,42 @@
 // TestContext = ele impoem informação como distribui como exemplo login, usuarioa começa com false para depois alterar.
 
-import {Link} from 'react-router-dom'; // link da pagina para ppasar pra outra 
+import {Link, useHistory } from 'react-router-dom'; // link da pagina para ppasar pra outra 
+import { FormEvent, useState } from 'react';
 import illustrationImg from '../assets/images/illustration.svg'
 import logoImg from '../assets/images/logo.svg';
 import '../style/auth.scss';
 import { Button } from '../components/Button';
-//import {user} from '../hooks/useAuth';
+import { database } from '../services/firebase';
+import {useAuth} from '../hooks/useAuth';
 
 export function NewRoom(){ 
 
-   // const {user} = useContext(AuthContext);
+   const {user} = useAuth()
+   const history = useHistory()
+
+   async function handleCreateRoom(event: FormEvent){ // geralmente recebe parameto event aonde está embaixo form 
+
+    event.preventDefault();
+
+    if (newRoom.trim() === ""){
+
+        return;
+    }
+
+    const roomRef = database.ref('rooms');
+
+    const firebaseRoom = await roomRef.push({ // insere dados do banco 
+
+        title: newRoom,
+        authorId: user?.id,
+
+    })
+
+    history.push(`/rooms/${firebaseRoom.key}`) // key e o Id que foi inserido ele vai retornar
+
+   }
+
+const [newRoom, setNewRoom] = useState('');
 
 return (
 
@@ -32,8 +59,8 @@ return (
 
     <h2>Criar uma nova sala </h2>
 
-    <form>
-        <input type="text" placeholder="Nome da Sala" />
+    <form onSubmit={handleCreateRoom}>
+        <input type="text" placeholder="Nome da Sala" onChange={event => setNewRoom(event.target.value)} value={newRoom}      />
         <Button type="submit">Criar sala</Button>
     </form>
 

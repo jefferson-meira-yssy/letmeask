@@ -21,6 +21,14 @@
         margin-right: 8px;
     }
 
+    &.outlined{
+
+    background: #fff;
+    color: #835afd;
+    border: 1px solid #835afd;
+ 
+    } /* " & ", lendo sobre liguangem seria quando for .outlined terá essa propriedade*/
+
     &:hover{
 
         filter: brightness(0,9); /*diminuir brighhtness ficar um pouco escuro quando passar o mouser no button */

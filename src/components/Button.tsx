@@ -5,13 +5,17 @@ import '../style/button.scss';
 // do button e interessante usar ButtonHTMLAttributes que já e do react para ser reutlezado e varias locação 
 // do coponente numa web pagina
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
-export function Button (props: ButtonProps) {    
+    isOutlined?: boolean
+};
+
+export function Button ({isOutlined = false, ...props}: ButtonProps) { // essa propriedade significa pegando resto
+    // ... siginfica jogando resto.
 
     return (
 
-            <button className="button" {...props} />
+            <button className={`button ${isOutlined ? 'outlined' : ' ' }`} {...props} />
 
     )
 

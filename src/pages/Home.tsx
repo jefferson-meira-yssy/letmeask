@@ -48,6 +48,8 @@ async function handleJoinRoom(event: FormEvent){
 
    }
 
+   if(roomRef.val().endedAt) { alert('Room already closed')}
+
     history.push(`/rooms/${roomCode}`) 
 
  }
